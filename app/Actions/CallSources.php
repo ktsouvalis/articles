@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Models\Article;
 use App\Services\NYTMapper;
 use App\Services\NewsFetcher;
+use App\Services\NewsAPIMapper;
 use App\Services\GuardianMapper;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -15,17 +16,18 @@ class CallSources
     public function handle()
     {
         $mapped_data = [];
-        $fetcher = new NewsFetcher();
-
-        $mapped_data[] = $this->fetchAndMap($fetcher, 'content.guardianapis.com/search', env('GUARDIAN_API_KEY'), new GuardianMapper());
-        $mapped_data[] = $this->fetchAndMap($fetcher, 'api.nytimes.com/svc/search/v2/articlesearch.json', env('NYTIMES_API_KEY'), new NYTMapper());
+        $mapped_data[] = $this->fetchAndMap('content.guardianapis.com/search', ['api-key'=>env('GUARDIAN_API_KEY')], new GuardianMapper() );
+        $mapped_data[] = $this->fetchAndMap('api.nytimes.com/svc/search/v2/articlesearch.json', ['api-key'=>env('NYTIMES_API_KEY')], new NYTMapper());
+        $mapped_data[] = $this->fetchAndMap('newsapi.org/v2/everything', ['apiKey'=>env('NEWSAPI_API_KEY'), 'q'=>'BBC'], new NewsAPIMapper());
 
         StoreArticles::dispatch($mapped_data);
     }
 
-    private function fetchAndMap($fetcher, $url, $apiKey, $mapper)
+    private function fetchAndMap($url, $headers, $mapper)
     {
-        $data = $fetcher->fetchArticles($url, $apiKey);
+        $fetcher = new NewsFetcher();
+        $data = $fetcher->fetchArticles($url, $headers);
+        
         return $mapper->mapData($data);
     }
     

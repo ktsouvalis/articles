@@ -5,11 +5,9 @@ use Illuminate\Support\Facades\Http;
 
 class NewsFetcher
 {
-    public function fetchArticles($url, $key)
+    public function fetchArticles($url, $headers)
     {
-        $response = Http::get($url, [
-            'api-key' => $key,
-        ]);
+        $response = Http::get($url, $headers);
 
         return $response->json();
     } 
