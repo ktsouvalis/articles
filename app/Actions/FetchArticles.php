@@ -3,7 +3,6 @@
 namespace App\Actions;
 
 use App\Models\Article;
-use App\Services\BBCService;
 use App\Services\NYTimesService;
 use App\Services\GuardianService;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -14,60 +13,29 @@ class FetchArticles
 
     public function handle()
     {
-        $this->fetchFromGuardian();
-        $this->fetchFromNYTimes();
-        $this->fetchFromBBC();
+        // $this->fetchFromService(GuardianService::class, 'guardian');
+        $this->fetchFromService(NYTimesService::class, 'nyt');
     }
 
-    private function fetchFromGuardian()
+    private function fetchFromService(string $serviceClass, string $source)
     {
-        $service = new GuardianService();
+        $service = new $serviceClass();
         $articles = $service->fetchArticles();
-
-        foreach ($articles['response']['results'] as $articleData) {
-            Article::updateOrCreate(
-                ['title' => $articleData['webTitle']],
-                [
-                    'content' => $articleData['fields']['bodyText'],
-                    'author' => $articleData['fields']['byline'] ?? null,
-                    'source' => 'The Guardian',
-                    'url' => $articleData['webUrl'],
-                ]
-            );
-        }
+        $mappedData = $service->mapData($articles);
+        $this->saveArticles($mappedData, $source);
     }
 
-    private function fetchFromNYTimes()
+    private function saveArticles(array $mappedData, string $source)
     {
-        $service = new NYTimesService();
-        $articles = $service->fetchArticles();
-
-        foreach ($articles['results'] as $articleData) {
+        foreach ($mappedData as $data) {
             Article::updateOrCreate(
-                ['title' => $articleData['title']],
+                ['doc_id' => $data['doc_id']],
                 [
-                    'content' => $articleData['abstract'],
-                    'author' => $articleData['byline'] ?? null,
-                    'source' => 'New York Times',
-                    'url' => $articleData['url'],
-                ]
-            );
-        }
-    }
-
-    private function fetchFromBBC()
-    {
-        $service = new BBCService();
-        $articles = $service->fetchArticles();
-
-        foreach ($articles['articles'] as $articleData) {
-            Article::updateOrCreate(
-                ['title' => $articleData['title']],
-                [
-                    'content' => $articleData['content'],
-                    'author' => $articleData['author'] ?? null,
-                    'source' => 'BBC News',
-                    'url' => $articleData['url'],
+                    'source' => $source,
+                    'published_at' => $data['date'],
+                    'author' => $data['author'] ?? null,
+                    'category' => $data['section'],
+                    'content' => json_encode($data['content']),
                 ]
             );
         }
@@ -75,6 +43,6 @@ class FetchArticles
 
     public function asJob()
     {
-        return $this->handle;
+        return $this->handle();
     }
 }

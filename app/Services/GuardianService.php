@@ -1,9 +1,10 @@
 <?php
 namespace App\Services;
 
+use ArticleService;
 use Illuminate\Support\Facades\Http;
 
-class GuardianService
+class GuardianService implements ArticleService
 {
     public function fetchArticles()
     {
@@ -13,5 +14,5 @@ class GuardianService
         ]);
 
         return $response->json();
-    }
+    } 
 }
