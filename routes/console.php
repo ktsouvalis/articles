@@ -11,3 +11,7 @@ Artisan::command('inspire', function () {
 Schedule::call(function(){
     FetchArticles::dispatch();
 })->hourly();
+
+Schedule::call(function(){
+    $mappedData = CallSources::dispatch();
+})->hourly();
