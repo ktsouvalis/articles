@@ -10,7 +10,6 @@ class NYTimesService implements ArticleService
     public function fetchArticles()
     {
         $response = Http::get('api.nytimes.com/svc/search/v2/articlesearch.json', [
-            // 'fq' => 'section_name:("Sports")',
             'api-key' => env('NYTIMES_API_KEY'),
         ]);
 

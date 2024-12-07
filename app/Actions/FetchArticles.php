@@ -13,7 +13,7 @@ class FetchArticles
 
     public function handle()
     {
-        // $this->fetchFromService(GuardianService::class, 'guardian');
+        $this->fetchFromService(GuardianService::class, 'guardian');
         $this->fetchFromService(NYTimesService::class, 'nyt');
     }
 
@@ -28,16 +28,17 @@ class FetchArticles
     private function saveArticles(array $mappedData, string $source)
     {
         foreach ($mappedData as $data) {
-            Article::updateOrCreate(
-                ['doc_id' => $data['doc_id']],
-                [
-                    'source' => $source,
-                    'published_at' => $data['date'],
-                    'author' => $data['author'] ?? null,
-                    'category' => $data['section'],
-                    'content' => json_encode($data['content']),
-                ]
-            );
+            if(Article::where('doc_id', $data['doc_id'])->exists()){
+                continue;
+            }
+            Article::create([
+                'doc_id' => $data['doc_id'],
+                'source' => $source,
+                'published_at' => $data['date'],
+                'author' => $data['author'] ?? null,
+                'category' => $data['section'],
+                'content' => json_encode($data['content']),
+            ]);
         }
     }
 
