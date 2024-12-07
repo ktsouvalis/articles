@@ -3,9 +3,8 @@
 namespace App\Actions;
 
 use App\Models\Article;
-use App\Services\NYTimesService;
-use App\Services\GuardianService;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Carbon\Carbon;
 
 class StoreArticles
 {
@@ -13,21 +12,20 @@ class StoreArticles
 
     public function handle(array $mappedData)
     {
-        // dump($mappedData);
         foreach ($mappedData as $source) {
+            $articles = [];
             foreach($source as $data){
-                if(Article::where('doc_id', $data['doc_id'])->exists()){
-                    continue;
-                }
-                Article::create([
+                $articles[] = [
                     'doc_id' => $data['doc_id'],
                     'source' => $data['source'],
-                    'published_at' => $data['date'],
+                    'published_at' => $data['published_at'],
                     'author' => $data['author'] ?? null,
-                    'category' => $data['section'],
+                    'category' => $data['category'],
                     'content' => json_encode($data['content']),
-                ]);
+                    'created_at' => Carbon::now(),
+                ];
             }
+            Article::insertOrIgnore($articles);
         }
     }
 

@@ -2,8 +2,7 @@
 
 namespace App\Interfaces;
 
-interface ArticleService
+interface Mapper
 {
-    public function fetchArticles();
     public function mapData($data);
 }

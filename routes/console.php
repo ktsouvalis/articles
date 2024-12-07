@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\FetchArticles;
+use App\Actions\CallSources;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -9,9 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::call(function(){
-    FetchArticles::dispatch();
-})->hourly();
-
-Schedule::call(function(){
-    $mappedData = CallSources::dispatch();
-})->hourly();
+    CallSources::dispatch();
+})->everyTenMinutes();

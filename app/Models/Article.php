@@ -14,5 +14,6 @@ class Article extends Model
         'author',
         'category',
         'content',
+        'created_at',
     ];
 }

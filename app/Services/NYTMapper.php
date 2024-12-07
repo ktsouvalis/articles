@@ -2,9 +2,10 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use App\Interfaces\Mapper;
 
 
-class NYTMapper
+class NYTMapper implements Mapper
 {
     public function mapData($data)
     {
@@ -12,8 +13,8 @@ class NYTMapper
         foreach($data['response']['docs'] as $article){
             $articles[] = [
                 'doc_id' => $article['_id'],
-                'date' => Carbon::parse($article['pub_date']),
-                'section' => $article['section_name'],
+                'published_at' => Carbon::parse($article['pub_date']),
+                'category' => $article['section_name'],
                 'author' => $article['byline']['original'],
                 'content' => $article,
                 'source' => 'nytimes',

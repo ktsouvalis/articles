@@ -2,9 +2,10 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use App\Interfaces\Mapper;
 
 
-class GuardianMapper
+class GuardianMapper implements Mapper
 {
     public function mapData($data)
     {
@@ -12,8 +13,8 @@ class GuardianMapper
         foreach($data['response']['results'] as $article){
             $articles[] = [
                 'doc_id' => $article['id'],
-                'date' => Carbon::parse($article['webPublicationDate']),
-                'section' => $article['sectionId'],
+                'published_at' => Carbon::parse($article['webPublicationDate']),
+                'category' => $article['sectionId'],
                 'author' => null,
                 'content' => $article,
                 'source' => 'guardian',

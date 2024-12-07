@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->string('doc_id')->unique();
+            // $table->id();
+            $table->string('doc_id')->primary();
             $table->string('source')->index();
             $table->timestamp('published_at')->index();
             $table->string('author')->nullable()->index();

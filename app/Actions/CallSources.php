@@ -20,7 +20,6 @@ class CallSources
         $mapped_data[] = $this->fetchAndMap($fetcher, 'content.guardianapis.com/search', env('GUARDIAN_API_KEY'), new GuardianMapper());
         $mapped_data[] = $this->fetchAndMap($fetcher, 'api.nytimes.com/svc/search/v2/articlesearch.json', env('NYTIMES_API_KEY'), new NYTMapper());
 
-        // return $mapped_data;
         StoreArticles::dispatch($mapped_data);
     }
 
