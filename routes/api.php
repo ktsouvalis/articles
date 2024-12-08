@@ -22,10 +22,12 @@ Route::get('/articles', [ArticleController::class, 'getArticlesByCriteria']);
 // author (optional): Filter articles by author name. Supports partial matches.
 // category (optional): Filter articles by category. Supports partial matches.
 // published_at (optional): Filter articles by a specific publication date (format: YYYY-MM-DD).
-// published_at_start (optional): Start date for filtering articles by publication date range (format: YYYY-MM-DD).
-// published_at_end (optional): End date for filtering articles by publication date range (format: YYYY-MM-DD).
 // source (optional): Filter articles by source. Supports partial matches.
 
+// // // the next two must be combined but if only one is provided it will be handled as published_at
+// published_at_start (optional): Start date for filtering articles by publication date range (format: YYYY-MM-DD).
+// published_at_end (optional): End date for filtering articles by publication date range (format: YYYY-MM-DD).
+// // // 
 
 // Response:
 // Status: 200 OK
