@@ -33,7 +33,7 @@ class CallSources
             ],
             [
                 'url' => 'newsapi.org/v2/everything',
-                'params' => ['from' => '2024-12-08', 'q' => 'BBC'],
+                'params' => ['from' => '2024-12-07', 'q' => 'BBC'],
                 'headers' => ['apiKey' => env('NEWSAPI_API_KEY')],
                 'start_page' =>1,
                 'mapper' => new NewsAPIMapper()
@@ -55,10 +55,12 @@ class CallSources
             $mapped_data[] = $this->fetchAndMap($url, $source['headers'], $source['mapper'], $source['start_page']);
         }
 
-        if (empty($mapped_data)) {
+        $flattened_data = array_merge(...$mapped_data);
+
+        if (empty($flattened_data)) {
             return;
         }
-        StoreArticles::dispatch($mapped_data);
+        StoreArticles::dispatch($flattened_data);
     }
 
     private function fetchAndMap($baseUrl, $headers, $mapper, $start_page)

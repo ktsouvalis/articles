@@ -18,7 +18,7 @@ class NewsAPIMapper implements Mapper
                     'category' => $article['title'],
                     'author' => $article['author'] ?? null,
                     'content' => $article,
-                    'source' => 'NewsApi:'.$article['source']['name'],
+                    'source' => $article['source']['name'],
                 ];
             }
         }
