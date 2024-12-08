@@ -21,7 +21,7 @@ class CallSources
         $sources = [
             [
                 'name' => 'NYTimes',
-                'url' => 'api.nytimes.com/svc/search/v2/articlesearch.json',
+                'url' => env('NYTIMES_API_URL'),
                 'params' => ['begin_date' => $this->getLastCall('NYTimes'), 'end_date' => Carbon::now()->toDateString()],
                 'headers' => ['api-key' => env('NYTIMES_API_KEY')],
                 'start_page' => 0,
@@ -29,7 +29,7 @@ class CallSources
             ],
             [
                 'name' => 'Guardian',
-                'url' => 'content.guardianapis.com/search',
+                'url' => env('GUARDIAN_API_URL'),
                 'params' => ['from-date' => $this->getLastCall('Guardian'), 'to-date' => Carbon::now()->toDateString()],
                 'headers' => ['api-key' => env('GUARDIAN_API_KEY')],
                 'start_page' => 1,
@@ -37,16 +37,17 @@ class CallSources
             ],
             [
                 'name' => 'NewsAPI',
-                'url' => 'newsapi.org/v2/everything',
+                'url' => env('NEWSAPI_API_URL'),
                 'params' => ['from' => $this->getLastCall('NewsAPI'), 'to' => Carbon::now()->toDateString(), 'q' => 'BBC'],
                 'headers' => ['apiKey' => env('NEWSAPI_API_KEY')],
                 'start_page' => 1,
                 'mapper' => new NewsAPIMapper()
             ],
-            
+
             // Add more sources here
             // [
-            //     'url' => 'your-api-url',
+            //     'name' => 'your-api-name',
+            //     'url' => env('your-api-url'),
             //     'params' => ['your-api-source-from-date-key' => $this->getLastCall('your-api-name'),'your-api-source-to-date-key' => Carbon::now()->toDateString()],
             //     'headers' => ['api-key' => env('your-api_API_KEY')],
             //     'start_page' => your-api-start-paging-number,
@@ -64,6 +65,7 @@ class CallSources
         $flattened_data = array_merge(...$mapped_data);
 
         if (empty($flattened_data)) {
+            Log::info('No new articles found');
             return;
         }
 

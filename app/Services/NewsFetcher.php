@@ -28,13 +28,18 @@ class NewsFetcher
         do {
             $query = array_merge($this->headers, ['page' => $page]);
             $url = $this->baseUrl . '&' . http_build_query($query);
+
             $response = Http::withHeaders($this->headers)->get($url);
+
             Log::info("Try to fetch from $url");
+            
             if ($response->status() != 200) {
                 Log::error('Error '.$response->status().': '.$response->body());
                 break;
             }
+
             Log::info("Success");
+
             $data = $response->json();
             $allData[] = $data;
             $page++;
