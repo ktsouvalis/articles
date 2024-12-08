@@ -27,8 +27,8 @@ class CallSources
 
     private function fetchAndMap($url, $headers, $mapper)
     {
-        $fetcher = new NewsFetcher();
-        $data = $fetcher->fetchArticles($url, $headers);
+        $fetcher = new NewsFetcher($url, $headers);
+        $data = $fetcher->getData();
         
         return $mapper->mapData($data);
     }

@@ -5,10 +5,25 @@ use Illuminate\Support\Facades\Http;
 
 class NewsFetcher
 {
-    public function fetchArticles($url, $headers)
-    {
-        $response = Http::get($url, $headers);
+    protected $url;
+    protected $headers;
+    protected $data;
 
-        return $response->json();
-    } 
+    public function __construct($url, $headers)
+    {
+        $this->url = $url;
+        $this->headers = $headers;
+        $this->fetchArticles();
+    }
+
+    private function fetchArticles()
+    {
+        $response = Http::get($this->url, $this->headers);
+        $this->data = $response->json();
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
 }
