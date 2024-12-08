@@ -31,7 +31,7 @@ class NewsFetcher
             $response = Http::withHeaders($this->headers)->get($url);
             Log::info("Try to fetch from $url");
             if ($response->status() != 200) {
-                Log::error('Error:'.$response->status());
+                Log::error('Error '.$response->status().': '.$response->body());
                 break;
             }
             Log::info("Success");
