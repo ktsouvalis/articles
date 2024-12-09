@@ -36,9 +36,8 @@ class StoreArticles
             exit;            
         }
 
-        $this->updateLastCall($sourceName); // Ensure last call is updated
+        $this->updateLastCall($sourceName);
         Log::info('STORER: '.Article::count() - $old_count . ' articles stored successfully from ' . $sourceName);
-        // exit;
     }
 
     private function updateLastCall($sourceName)
