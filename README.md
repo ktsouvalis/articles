@@ -87,7 +87,7 @@ Pick an API source of your preference, and follow these steps to integrate it in
     - Locate the `SourceKeeper` class in your project.
     - Use the `setSources` method to add a new record to the sources array for your chosen API source. This will typically involve specifying the source name and any necessary configuration details. You have to study your choice's API Documentation
 
-2. **Create Your Own Mapper in app/Services:**
+2. **Create Your Own Mapper in `app/Services/`:**
     - Create a new Mapper class for your API source. This class should implement the necessary Mapper interface. Use the ExampleMapper and the other existing mappers as a reference to understand the required methods and structure.
 
 ## License
