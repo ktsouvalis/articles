@@ -10,4 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::call(function(){
     CallSources::dispatch();
-})->everyTenMinutes();
+})->twiceDaily(8, 20);
