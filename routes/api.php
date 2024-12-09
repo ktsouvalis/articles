@@ -16,6 +16,7 @@ Route::get('/articles', [ArticleController::class, 'getArticlesByCriteria']);
 // Method: GET
 
 // Description: Fetches articles based on the given criteria. The criteria are optional and can be combined to filter the results.
+// contents key includes the source's original content of the article.
 
 // Query Parameters:
 
