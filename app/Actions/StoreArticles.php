@@ -13,8 +13,7 @@ class StoreArticles
 {
     use AsAction;
 
-    public function handle(array $mappedData, string $sourceName)
-    {
+    public function handle(array $mappedData, string $sourceName){
         $old_count = Article::count();
         $articles = [];
         foreach ($mappedData as $data) {
@@ -40,47 +39,16 @@ class StoreArticles
         Log::info('STORER: '.Article::count() - $old_count . ' articles stored successfully from ' . $sourceName);
     }
 
-    private function updateLastCall($sourceName)
-    {
+    public function asJob(array $mappedData, string $sourceName){ 
+        return $this->handle($mappedData, $sourceName);
+    }
+
+    private function updateLastCall($sourceName){
         DB::table('last_news')->updateOrInsert(
             ['name' => $sourceName],
             ['last_call' => Carbon::now()]
         );
     }
 
-    // public function handle(array $mappedData)
-    // {
-    //     $totalRecords = count($mappedData);
-    //     $uniqueRecords = [];
-
-    //     foreach ($mappedData as $data) {
-    //         $uniqueRecords[$data['doc_id']] = [
-    //             'doc_id' => $data['doc_id'],
-    //             'source' => $data['source'],
-    //             'published_at' => $data['published_at'],
-    //             'author' => $data['author'] ?? null,
-    //             'category' => $data['category'],
-    //             'content' => json_encode($data['content']),
-    //             'created_at' => Carbon::now(),
-    //             'updated_at' => Carbon::now(),
-    //         ];
-    //     }
-
-    //     $uniqueRecords = array_values($uniqueRecords);
-    //     $uniqueCount = count($uniqueRecords);
-
-    //     try {
-    //         Article::insertOrIgnore($uniqueRecords);
-    //     } catch (Exception $e) {
-    //         Log::error($e->getMessage());
-    //     }
-
-    //     $ignoredRecords = $totalRecords - $uniqueCount;
-    //     Log::info("Total records: $totalRecords, Unique records: $uniqueCount, Ignored records: $ignoredRecords");
-    // }
-
-    public function asJob(array $mappedData, string $sourceName)
-    {
-        return $this->handle($mappedData, $sourceName);
-    }
+    
 }

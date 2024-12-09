@@ -7,8 +7,7 @@ use App\Interfaces\Mapper;
 
 class ExampleMapper implements Mapper
 {
-    public function mapData($data)
-    {
+    public function mapData($data){
         // $articles = [];
         // foreach($data['response']['results'] as $article){ // replace ['response']['results'] with the actual path to the articles in your API response
         //     $articles[] = [

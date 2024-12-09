@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class NewsAPIMapper implements Mapper
 {
-    public function mapData($data)
-    {
+    public function mapData($data){
         $articles = [];
         foreach($data as $page){
             foreach($page['articles'] as $article){

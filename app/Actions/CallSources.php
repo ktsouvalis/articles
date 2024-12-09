@@ -2,7 +2,6 @@
 
 namespace App\Actions;
 
-use App\Models\Article;
 use App\Services\NYTMapper;
 use App\Services\NewsFetcher;
 use App\Services\NewsAPIMapper;
@@ -32,8 +31,12 @@ class CallSources
         }
     }
 
-    private function getSources()
+    public function asJob()
     {
+        return $this->handle();
+    }
+
+    private function getSources(){
         return [
             [
                 'name' => 'NYTimes',
@@ -65,12 +68,22 @@ class CallSources
                 'page_size' => 100,
                 'mapper' => new NewsAPIMapper()
             ],
+
             // Add more sources here
+            // [
+            //     'name' => 'ExampleNews',
+            //     'url' => env('EXAMPLENEWS_API_URL'),
+            //     'params' => ['start_date' => $this->getLastCall('ExampleNews'), 'end_date' => Carbon::now()->toDateString()],
+            //     'headers' => ['your-source-needed-headers' => 'your-source-headers-value'],
+            //     'start_page' => 'your-source-api-response-start-page',
+            //     'total_key' => 'number: your-source-api-response-total-key',
+            //     'page_size' => 'number: your-source-api-response-page-size',
+            //     'mapper' => new ExampleMapper()
+            // ]
         ];
     }
 
-    private function fetchAndMapData($source)
-    {
+    private function fetchAndMapData($source){
         $query = http_build_query($source['params']);
         $url = "{$source['url']}?$query";
         
@@ -81,14 +94,8 @@ class CallSources
         return array_merge(...$mapped_data);
     }
 
-    private function getLastCall($sourceName)
-    {
+    private function getLastCall($sourceName){
         $lastCall = DB::table('last_news')->where('name', $sourceName)->value('last_call');
         return $lastCall ? Carbon::parse($lastCall)->toDateString() : Carbon::now()->subDay()->toDateString();
-    }
-    
-    public function asJob()
-    {
-        return $this->handle();
     }
 }

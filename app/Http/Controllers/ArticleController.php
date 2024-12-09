@@ -7,54 +7,28 @@ use App\Models\Article;
 
 class ArticleController extends Controller
 {
-    public function index(Request $request)
-    {
+    public function getArticlesByCriteria(Request $request){
         $query = Article::query();
 
-        if ($request->has('author')) {
-            $query->where('author', $request->input('author'));
-        }
-
-        if ($request->has('source')) {
-            $query->where('source', $request->input('source'));
-        }
-
-        if ($request->has('category')) {
-            $query->where('category', $request->input('category'));
-        }
-
-        if ($request->has('date')) {
-            $query->whereDate('created_at', $request->input('date'));
-        }
-
-        return response()->json($query->get());
-    }
-
-    public function getArticlesByCriteria(Request $request)
-    {
-        $query = Article::query();
-
-        if ($request->has('author')) {
+        if ($request->has('author')){
             $query->where('author', 'like', '%' . $request->input('author') . '%');
         }
 
-        if ($request->has('category')) {
+        if ($request->has('category')){
             $query->where('category', 'like', '%' . $request->input('category') . '%');
         }
 
-        if ($request->has('published_at_start') || $request->has('published_at_end')) {
-            if (!$request->has('published_at_start')) {
-                $query->whereDate('published_at', $request->input('published_at_end'));
-            } else if (!$request->has('published_at_end')) {
-                $query->whereDate('published_at', $request->input('published_at_start'));
-            } else {
-                $query->whereBetween('published_at', [$request->input('published_at_start'), $request->input('published_at_end')]);
-            }
-        } elseif ($request->has('published_at')) {
+        if ($request->has('published_at_start') xor $request->has('published_at_end')){
+            $query->whereDate('published_at', $request->input('published_at_start') ?? $request->input('published_at_end'));
+        } 
+        elseif ($request->has('published_at_start') && $request->has('published_at_end')){
+            $query->whereBetween('published_at', [$request->input('published_at_start'), $request->input('published_at_end')]);
+        } 
+        elseif ($request->has('published_at')){
             $query->whereDate('published_at', $request->input('published_at'));
         }
 
-        if ($request->has('source')) {
+        if ($request->has('source')){
             $query->where('source', 'like', '%' . $request->input('source') . '%');
         }
 
@@ -62,16 +36,14 @@ class ArticleController extends Controller
         $articles = $query->paginate($pageSize, ['content']);
 
         // JSON decode the content subkey of each article
-        $articles->transform(function ($article) {
+        $articles->transform(function ($article){
             $article->content = json_decode($article->content);
             return $article;
         });
 
-        if ($articles->isEmpty()) {
+        if ($articles->isEmpty()){
             return response()->json(['message' => 'No articles found matching the given criteria.'], 404);
         }
-
-        // return response()->json($articles, 200);
 
         return response()->json([
             'total' => $articles->total(),

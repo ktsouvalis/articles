@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class GuardianMapper implements Mapper
 {
-    public function mapData($data)
-    {
+    public function mapData($data){
         $articles = [];
         foreach($data as $page){
             foreach($page['response']['results'] as $article){

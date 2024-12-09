@@ -15,8 +15,7 @@ class NewsFetcher
     protected $data;
     protected $total_pages;
 
-    public function __construct($baseUrl, $headers, $start_page, $total_key, $page_size)
-    {
+    public function __construct($baseUrl, $headers, $start_page, $total_key, $page_size){
         $this->baseUrl = $baseUrl;
         $this->headers = $headers;
         $this->start_page = $start_page;
@@ -26,8 +25,7 @@ class NewsFetcher
         $this->fetchArticles();
     }
 
-    private function fetchArticles()
-    {
+    private function fetchArticles(){
         $page = $this->start_page;
         $allData = [];
 
@@ -62,11 +60,6 @@ class NewsFetcher
         $this->data = $allData;
     }
 
-    public function getData()
-    {
-        return $this->data;
-    }
-
     private function retreiveResultsNumberFromResponse($data){
         $keys = explode('.', $this->total_key);
         $value = $data;
@@ -85,5 +78,9 @@ class NewsFetcher
 
     private function calculatePages($total){
         return ceil($total / $this->page_size);
+    }
+
+    public function getData(){
+        return $this->data;
     }
 }
