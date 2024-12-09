@@ -5,6 +5,7 @@ namespace App\Actions;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Article;
+use App\Services\LastCallService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -35,20 +36,12 @@ class StoreArticles
             exit;            
         }
 
-        $this->updateLastCall($sourceName);
+        $lastCallService = new LastCallService();
+        $lastCallService->updateLastCall($sourceName);
         Log::info('STORER: '.Article::count() - $old_count . ' articles stored successfully from ' . $sourceName);
     }
 
     public function asJob(array $mappedData, string $sourceName){ 
         return $this->handle($mappedData, $sourceName);
     }
-
-    private function updateLastCall($sourceName){
-        DB::table('last_news')->updateOrInsert(
-            ['name' => $sourceName],
-            ['last_call' => Carbon::now()]
-        );
-    }
-
-    
 }
