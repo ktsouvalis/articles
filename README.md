@@ -10,9 +10,8 @@ Documentation of the API is inside /routes/api.php
 ### Step 1: Clone the Repository
 
 ```sh
-mkdir articles
+git clone https://github.com/ktsouvalis/articles.git
 cd articles
-git clone https://github.com/ktsouvalis/articles.git .
 ```
 
 ### Step 2: Install Dependencies
@@ -31,7 +30,7 @@ php artisan key:generate
 ```
 
 Inside the `.env` file, set your database connection details for MySQL or the path to your SQLite file.  
-Also set your enviroment variables for the sources e.g.
+Also set your enviroment variables for the sources:
 
 ```env
 GUARDIAN_API_URL=content.guardianapis.com/search
@@ -39,7 +38,7 @@ GUARDIAN_API_KEY=your-guardian-key
 NYTIMES_API_URL=api.nytimes.com/svc/search/v2/articlesearch.json
 NYTIMES_API_KEY=your-nytimes-key
 NEWSAPI_API_URL=newsapi.org/v2/everything
-NEWSAPI_API_KEY=tour-news-api-key
+NEWSAPI_API_KEY=your-news-api-key
 ```
 
 
@@ -73,7 +72,7 @@ php artisan queue:work
 php artisan app:call-sources
 ```
 
-### OR: Run the scheduler and wait
+### OR: Run the scheduler and wait until 8am or 8pm
 
 ```sh
 php artisan schedule:work
