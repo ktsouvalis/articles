@@ -16,6 +16,10 @@
         <include>
             <directory>app</directory>
         </include>
+        <exclude>
+            <directory>app/models</directory>
+            <file>app/Services/ExampleMapper.php</file>
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
