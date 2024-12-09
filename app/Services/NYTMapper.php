@@ -22,7 +22,7 @@ class NYTMapper implements Mapper
                 ];
             }
         }
-        Log::info("Mapped " . count($articles) . " articles from NYT");
+        Log::info("MAPPER: Mapped " . count($articles) . " articles from NYT");
         return $articles;
     }
 }

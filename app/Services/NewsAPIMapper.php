@@ -22,7 +22,7 @@ class NewsAPIMapper implements Mapper
                 ];
             }
         }
-        Log::info("Mapped " . count($articles) . " articles from NewsAPI");
+        Log::info("MAPPER: Mapped " . count($articles) . " articles from NewsAPI");
         return $articles;
     }
 }

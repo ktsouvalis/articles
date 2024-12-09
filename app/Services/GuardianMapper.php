@@ -23,7 +23,7 @@ class GuardianMapper implements Mapper
                 ];
             }
         }
-        Log::info("Mapped " . count($articles) . " articles from Guardian");
+        Log::info("MAPPER: Mapped " . count($articles) . " articles from Guardian");
         return $articles;
     }
 }

@@ -55,25 +55,24 @@ class CallSources
             // ],
         ];
 
-        $mapped_data = [];
+        
         foreach ($sources as $source) {
+            $mapped_data = [];
             $query = http_build_query($source['params']);
             $url = "{$source['url']}?$query";
             $mapped_data[] = $this->fetchAndMap($url, $source['headers'], $source['mapper'], $source['start_page']);
+        
+
+            $flattened_data = array_merge(...$mapped_data);
+
+            if (empty($flattened_data)) {
+                Log::info('No new articles found in ' . $source['name']);
+                continue;
+            }
+
+            StoreArticles::dispatch($flattened_data, $source['name']);
         }
-
-        $flattened_data = array_merge(...$mapped_data);
-
-        if (empty($flattened_data)) {
-            Log::info('No new articles found');
-            return;
-        }
-
-        StoreArticles::dispatch($flattened_data);
-
-        foreach ($sources as $source) {
-            $this->updateLastCall($source['name']);
-        }
+        // exit;
     }
 
     private function getLastCall($sourceName)
@@ -82,13 +81,6 @@ class CallSources
         return $lastCall ? Carbon::parse($lastCall)->toDateString() : Carbon::now()->subDay()->toDateString();
     }
 
-    private function updateLastCall($sourceName)
-    {
-        DB::table('last_news')->updateOrInsert(
-            ['name' => $sourceName],
-            ['last_call' => Carbon::now()]
-        );
-    }
 
     private function fetchAndMap($baseUrl, $headers, $mapper, $start_page)
     {
