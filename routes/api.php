@@ -34,45 +34,41 @@ Route::get('/articles', [ArticleController::class, 'getArticlesByCriteria']);
 // Status: 200 OK
 // Body: JSON array of articles, each containing the content field.
 
-// Example Response:
+	
+// total	325
 // current_page	1
-// last_page	8
+// last_page	17
 // per_page	20
 // next_page_url	"http://localhost:8000/api/articles?page=2"
 // prev_page_url	null
 // data	
-// 0	
-//  content	
-//  id	"commentisfree/2024/dec/0…ith-perils-keir-starmer"
-//  type	"article"
-//  apiUrl	"https://content.guardian…with-perils-keir-starmer"
-//  webUrl	"https://www.theguardian.…with-perils-keir-starmer"
-//  isHosted	false
-//  pillarId	"pillar/opinion"
-//  webTitle	"Britain has never looked…rld pulsing with perils"
-//  sectionId	"commentisfree"
-//  pillarName	"Opinion"
-//  sectionName	"Opinion"
-//  webPublicationDate	"2024-12-08T07:30:47Z"
-// 1	{…}
-// 2	{…}
-// 3	{…}
-// 4	{…}
-// 5	{…}
-// 6	{…}
-// 7	{…}
-// 8	{…}
-// 9	{…}
-// 10	{…}
-// 11	{…}
-// 12	{…}
-// 13	{…}
-// 14	{…}
-// 15	{…}
-// 16	{…}
-// 17	{…}
-// 18	{…}
-// 19	{…}
+//  0	
+//      content	
+//          url	"https://www.theguardian.…is-deep-in-trump-country"
+//          title	"From brutalist school to…s deep in Trump country"
+//          author	null
+//          summary	"From brutalist school to…s deep in Trump country"
+//          category	"Art and design"
+//          published_at	"2024-12-09T05:00:13.000000Z"
+//  1	{…}
+//  2	{…}
+//  3	{…}
+//  4	{…}
+//  5	{…}
+//  6	{…}
+//  7	{…}
+//  8	{…}
+//  9	{…}
+//  10	{…}
+//  11	{…}
+//  12	{…}
+//  13	{…}
+//  14	{…}
+//  15	{…}
+//  16	{…}
+//  17	{…}
+//  18	{…}
+//  19	{…}
 
 // Notes:
 // If no query parameters are provided, all articles will be returned.

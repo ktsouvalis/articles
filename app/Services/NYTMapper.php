@@ -16,12 +16,23 @@ class NYTMapper implements Mapper
                     'published_at' => Carbon::parse($article['pub_date']),
                     'category' => $article['section_name'],
                     'author' => $article['byline']['original'],
-                    'content' => $article,
+                    'content'=> method_exists($this, 'getInterestingData') ? $this->getInterestingData($article) : $article,
                     'source' => 'nytimes',
                 ];
             }
         }
         Log::info("MAPPER: Mapped " . count($articles) . " articles from NYT");
         return $articles;
+    }
+
+    private function getInterestingData($article){
+        return [
+            'category' => $article['section_name'],
+            'author' => $article['byline']['original'] ?? null,
+            'title' => $article['headline']['print_headline'] ?? $article['headline']['main'],
+            'url' => $article['web_url'],
+            'summary' => $article['abstract'],
+            'published_at' => Carbon::parse($article['pub_date']),
+        ];
     }
 }

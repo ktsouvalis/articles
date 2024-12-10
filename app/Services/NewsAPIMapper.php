@@ -14,14 +14,25 @@ class NewsAPIMapper implements Mapper
                 $articles[] = [
                     'doc_id' => $article['url'],
                     'published_at' => Carbon::parse($article['publishedAt']),
-                    'category' => $article['title'],
+                    'category' => $article['title'], // something to help searching
                     'author' => $article['author'] ?? null,
-                    'content' => $article,
+                    'content' => method_exists($this, 'getInterestingData') ? $this->getInterestingData($article) : $article,
                     'source' => $article['source']['name'],
                 ];
             }
         }
         Log::info("MAPPER: Mapped " . count($articles) . " articles from NewsAPI");
         return $articles;
+    }
+
+    private function getInterestingData($article){
+        return [ 
+            'category' => 'Uncategorized', // newasapi does not provide category to this call
+            'author' => $article['author'] ?? null,
+            'title' => $article['title'],
+            'url' => $article['url'],
+            'summary' => $article['description'],
+            'published_at' =>Carbon::parse($article['publishedAt']),
+        ];
     }
 }
