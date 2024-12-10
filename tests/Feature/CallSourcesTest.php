@@ -13,9 +13,9 @@ class CallSourcesTest extends TestCase
     public function test_call_sources_combined()
     {
         Http::fake([
-            'nytimes.com/*' => Http::response(['response' => ['docs' => [['pub_date' => '2024-12-08', '_id' => '1', 'section_name' => 'Tech', 'byline' => ['original' => 'John Doe']]]]], 200),
-            'guardianapis.com/*' => Http::response(['response' => ['results' => [['webPublicationDate' => '2024-12-08', 'id' => '2', 'sectionId' => 'Tech']]]], 200),
-            'newsapi.org/*' => Http::response(['articles' => [['publishedAt' => '2024-12-08', 'url' => '3', 'title' => 'Tech', 'author' => 'John Doe', 'source' => ['name' => 'NewsAPI']]]], 200),
+            'nytimes.com/*' => Http::response(['response' => ['docs' => [['pub_date' => '2024-12-08', '_id' => '1', 'section_name' => 'Tech', 'byline' => ['original' => 'John Doe'], 'headline' => ['main' => 'Tech News'], 'web_url' => 'http://example.com', 'abstract' => 'Summary of the article']]]], 200),
+            'guardianapis.com/*' => Http::response(['response' => ['results' => [['webPublicationDate' => '2024-12-08', 'id' => '2', 'sectionId' => 'Tech', 'sectionName' => 'Technology', 'webTitle' => 'Tech News', 'webUrl' => 'http://example.com']]]], 200),
+            'newsapi.org/*' => Http::response(['articles' => [['publishedAt' => '2024-12-08', 'url' => '3', 'title' => 'Tech News', 'author' => 'John Doe', 'description' => 'Summary of the article', 'source' => ['name' => 'NewsAPI']]]], 200),
         ]);
 
         $callSources = new CallSources();
@@ -30,8 +30,8 @@ class CallSourcesTest extends TestCase
     {
         Http::fake([
             'nytimes.com/*' => Http::response(null, 404),
-            'guardianapis.com/*' => Http::response(['response' => ['results' => [['webPublicationDate' => '2024-12-08', 'id' => '2', 'sectionId' => 'Tech']]]], 200),
-            'newsapi.org/*' => Http::response(['articles' => [['publishedAt' => '2024-12-08', 'url' => '3', 'title' => 'Tech', 'author' => 'John Doe', 'source' => ['name' => 'NewsAPI']]]], 200),
+            'guardianapis.com/*' => Http::response(['response' => ['results' => [['webPublicationDate' => '2024-12-08', 'id' => '2', 'sectionId' => 'Tech', 'sectionName' => 'Technology', 'webTitle' => 'Tech News', 'webUrl' => 'http://example.com']]]], 200),
+            'newsapi.org/*' => Http::response(['articles' => [['publishedAt' => '2024-12-08', 'url' => '3', 'title' => 'Tech News', 'author' => 'John Doe', 'description' => 'Summary of the article', 'source' => ['name' => 'NewsAPI']]]], 200),
         ]);
 
         $callSources = new CallSources();
@@ -45,9 +45,9 @@ class CallSourcesTest extends TestCase
     public function test_call_sources_second_not_responding()
     {
         Http::fake([
-            'nytimes.com/*' => Http::response(['response' => ['docs' => [['pub_date' => '2024-12-08', '_id' => '1', 'section_name' => 'Tech', 'byline' => ['original' => 'John Doe']]]]], 200),
+            'nytimes.com/*' => Http::response(['response' => ['docs' => [['pub_date' => '2024-12-08', '_id' => '1', 'section_name' => 'Tech', 'byline' => ['original' => 'John Doe'], 'headline' => ['main' => 'Tech News'], 'web_url' => 'http://example.com', 'abstract' => 'Summary of the article']]]], 200),
             'guardianapis.com/*' => Http::response(null, 404),
-            'newsapi.org/*' => Http::response(['articles' => [['publishedAt' => '2024-12-08', 'url' => '3', 'title' => 'Tech', 'author' => 'John Doe', 'source' => ['name' => 'NewsAPI']]]], 200),
+            'newsapi.org/*' => Http::response(['articles' => [['publishedAt' => '2024-12-08', 'url' => '3', 'title' => 'Tech News', 'author' => 'John Doe', 'description' => 'Summary of the article', 'source' => ['name' => 'NewsAPI']]]], 200),
         ]);
 
         $callSources = new CallSources();
@@ -62,8 +62,8 @@ class CallSourcesTest extends TestCase
     {
         Http::fake([
             'nytimes.com/*' => Http::response(['response' => ['docs' => []]], 200),
-            'guardianapis.com/*' => Http::response(['response' => ['results' => [['webPublicationDate' => '2024-12-08', 'id' => '2', 'sectionId' => 'Tech']]]], 200),
-            'newsapi.org/*' => Http::response(['articles' => [['publishedAt' => '2024-12-08', 'url' => '3', 'title' => 'Tech', 'author' => 'John Doe', 'source' => ['name' => 'NewsAPI']]]], 200),
+            'guardianapis.com/*' => Http::response(['response' => ['results' => [['webPublicationDate' => '2024-12-08', 'id' => '2', 'sectionId' => 'Tech', 'sectionName' => 'Technology', 'webTitle' => 'Tech News', 'webUrl' => 'http://example.com']]]], 200),
+            'newsapi.org/*' => Http::response(['articles' => [['publishedAt' => '2024-12-08', 'url' => '3', 'title' => 'Tech News', 'author' => 'John Doe', 'description' => 'Summary of the article', 'source' => ['name' => 'NewsAPI']]]], 200),
         ]);
 
         $callSources = new CallSources();
@@ -77,8 +77,8 @@ class CallSourcesTest extends TestCase
     public function test_call_sources_third_returns_no_results()
     {
         Http::fake([
-            'nytimes.com/*' => Http::response(['response' => ['docs' => [['pub_date' => '2024-12-08', '_id' => '1', 'section_name' => 'Tech', 'byline' => ['original' => 'John Doe']]]]], 200),
-            'guardianapis.com/*' => Http::response(['response' => ['results' => [['webPublicationDate' => '2024-12-08', 'id' => '2', 'sectionId' => 'Tech']]]], 200),
+            'nytimes.com/*' => Http::response(['response' => ['docs' => [['pub_date' => '2024-12-08', '_id' => '1', 'section_name' => 'Tech', 'byline' => ['original' => 'John Doe'], 'headline' => ['main' => 'Tech News'], 'web_url' => 'http://example.com', 'abstract' => 'Summary of the article']]]], 200),
+            'guardianapis.com/*' => Http::response(['response' => ['results' => [['webPublicationDate' => '2024-12-08', 'id' => '2', 'sectionId' => 'Tech', 'sectionName' => 'Technology', 'webTitle' => 'Tech News', 'webUrl' => 'http://example.com']]]], 200),
             'newsapi.org/*' => Http::response(['articles' => [], 200]),
         ]);
 
