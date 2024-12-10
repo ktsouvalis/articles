@@ -33,6 +33,9 @@ class CallSources
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function asJob()
     {
         return $this->handle();

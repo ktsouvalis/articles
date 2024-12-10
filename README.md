@@ -72,7 +72,7 @@ php artisan queue:work
 php artisan app:call-sources
 ```
 
-### OR: Run the scheduler and wait until 8am or 8pm
+### OR: Run the scheduler and wait until 6am or 6pm
 
 ```sh
 php artisan schedule:work
