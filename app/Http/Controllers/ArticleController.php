@@ -9,17 +9,6 @@ class ArticleController extends Controller
 {
     public function getArticlesByCriteria(Request $request){
 
-        // Authorizing and Rate Limiting Demo
-        // $token = $request->bearerToken();
-        // if (!$token) {
-        //     return response()->json(['message' => 'Authorization token not provided.'], 401);
-        // }
-        // RateLimiter::hit($token, 3600);
-        // if(RateLimiter::tooManyAttempts($token, 60)){
-        //     return response()->json(['message' => 'Too many posts created. Please wait ' . RateLimiter::availableIn($token) . ' seconds before retrying.'], 429);
-        // }
-        // ** //
-
         $query = Article::query();
 
         if ($request->has('author')){

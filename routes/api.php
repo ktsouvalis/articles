@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 
-Route::get('/articles', [ArticleController::class, 'getArticlesByCriteria']);
+Route::get('/articles', [ArticleController::class, 'getArticlesByCriteria'])->middleware('throttle:100,1440');
 
 // API Documentation
 
