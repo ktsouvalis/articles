@@ -1,18 +1,18 @@
-./vendor/bin/phpunit --coverage-text                       
+./vendor/bin/phpunit --coverage-text                      
 PHPUnit 11.5.0 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.3.10 with Xdebug 3.3.2
 Configuration: \articles\phpunit.xml
 
-............                                                      12 / 12 (100%)
+.............                                                     13 / 13 (100%)
 
-Time: 00:01.964, Memory: 50.00 MB
+Time: 00:02.487, Memory: 50.00 MB
 
-OK (12 tests, 34 assertions)
+OK (13 tests, 35 assertions)
 
 
 Code Coverage Report:      
-  2024-12-10 08:36:45      
+  2024-12-11 08:51:09      
                            
  Summary:                  
   Classes: 72.73% (8/11)   
