@@ -3,11 +3,9 @@
 namespace App\Actions;
 
 use Carbon\Carbon;
-use App\Services\NYTMapper;
+use App\Services\Mapper;
 use App\Services\NewsFetcher;
 use App\Services\SourceKeeper;
-use App\Services\NewsAPIMapper;
-use App\Services\GuardianMapper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -23,13 +21,12 @@ class CallSources
 
         foreach ($sources as $source) {
             $flattened_data = $this->fetchAndMapData($source);
-            
             if (empty($flattened_data)) {
-                Log::info('No new articles found in ' . $source['name']);
+                Log::info('No new articles found in ' . $source['fields']['source']);
                 continue;
             }
-
-            StoreArticles::dispatch($flattened_data, $source['name']);
+            
+            StoreArticles::dispatch($flattened_data);
         }
     }
 
@@ -42,13 +39,10 @@ class CallSources
     }
 
     private function fetchAndMapData($source){
-        $query = http_build_query($source['params']);
-        $url = "{$source['url']}?$query";
-        
-        $fetcher = new NewsFetcher($url, $source['headers'], $source['start_page'], $source['total_key'], $source['page_size']);
+        $fetcher = new NewsFetcher($source);
         $data = $fetcher->getData();
-        $mapped_data[] = $source['mapper']->mapData($data);
-        
+        $mapper = new Mapper($source);
+        $mapped_data[] = $mapper->mapData($data);
         return array_merge(...$mapped_data);
     }
 }

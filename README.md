@@ -80,14 +80,9 @@ php artisan schedule:work
 
 ## Extending the Application
 
-Pick an API source of your preference, and follow these steps to integrate it into the application:
-
-1. **Add a New Source in `app/Services/SourceKeeper.php`:**
+### Pick an API source of your preference, and add a New Source in `app/Services/SourceKeeper.php`:
     - Locate the `SourceKeeper` class in your project.
     - Use the `setSources` method to add a new record to the sources array for your chosen API source. This will typically involve specifying the source name and any necessary configuration details. You have to study your choice's API Documentation
-
-2. **Create Your Own Mapper in `app/Services/`:**
-    - Create a new Mapper class for your API source. This class should implement the necessary Mapper interface. Use the ExampleMapper and the other existing mappers as a reference to understand the required methods and structure.
 
 ## License
 

@@ -14,34 +14,34 @@ class StoreArticles
 {
     use AsAction;
 
-    public function handle(array $mappedData, string $sourceName){
+    public function handle(array $mappedData) {
         $old_count = Article::count();
         $articles = [];
         foreach ($mappedData as $data) {
             $articles[] = [
                 'doc_id' => $data['doc_id'],
                 'source' => $data['source'],
-                'published_at' => $data['published_at'],
+                'published_at' => Carbon::parse($data['published_at']),
                 'author' => $data['author'] ?? null,
                 'category' => $data['category'],
-                'content' => json_encode($data['content']),
+                'content' => json_encode($data),
                 'created_at' => Carbon::now(),
             ];
         }
-    
+
         try {
             Article::insertOrIgnore($articles);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            exit;            
+            exit;
         }
 
         $lastCallService = new LastCallService();
-        $lastCallService->updateLastCall($sourceName);
-        Log::info('STORER: '.Article::count() - $old_count . ' articles stored successfully from ' . $sourceName);
+        $lastCallService->updateLastCall($articles[0]['source']);
+        Log::info('STORER: ' . (Article::count() - $old_count) . ' articles stored successfully from ' . $articles[0]['source']);
     }
 
-    public function asJob(array $mappedData, string $sourceName){ 
-        return $this->handle($mappedData, $sourceName);
+    public function asJob(array $mappedData) { 
+        return $this->handle($mappedData);
     }
 }

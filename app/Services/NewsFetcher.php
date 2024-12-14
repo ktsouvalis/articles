@@ -7,20 +7,19 @@ use Illuminate\Support\Facades\Http;
 class NewsFetcher
 {
     protected $baseUrl;
-    protected $headers;
     protected $start_page;
     protected $total_key;
     protected $page_size;
-
+    protected $params;
     protected $data;
     protected $total_pages;
 
-    public function __construct($baseUrl, $headers, $start_page, $total_key, $page_size){
-        $this->baseUrl = $baseUrl;
-        $this->headers = $headers;
-        $this->start_page = $start_page;
-        $this->total_key = $total_key;
-        $this->page_size = $page_size;
+    public function __construct($source){
+        $this->baseUrl = $source['url'];
+        $this->params = $source['params'];
+        $this->start_page = $source['start_page'] ?? 1;
+        $this->total_key = $source['total_key']; 
+        $this->page_size = $source['page_size'] ?? 10;
         $this->total_pages = 1;
         $this->fetchArticles();
     }
@@ -30,11 +29,9 @@ class NewsFetcher
         $allData = [];
 
         while ($page <= $this->total_pages) {
-            $query = array_merge($this->headers, ['page' => $page]);
-            $url = $this->baseUrl . '&' . http_build_query($query);
-
-            $response = Http::withHeaders($this->headers)->get($url);
-
+            $query = array_merge($this->params, ['page' => $page]);
+            $url = $this->baseUrl . '?' . http_build_query($query);
+            $response = Http::get($url);
             Log::info("Try to fetch from $url");
             
             if ($response->status() != 200) {

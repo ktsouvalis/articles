@@ -46,6 +46,9 @@ class ArticleController extends Controller
             return response()->json(['message' => 'No articles found matching the given criteria.'], 404);
         }
 
+        // Append query parameters to pagination URLs
+        $articles->appends($request->except('page'));
+
         return response()->json([
             'total' => $articles->total(),
             'current_page' => $articles->currentPage(),
