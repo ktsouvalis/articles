@@ -44,17 +44,11 @@ class CallSourcesCommand extends Command
             return 1;
         }
 
-        try {
-            $sourceKeeper = new $sourceKeeperClass();
-            $sources = $sourceKeeper->getSources();
-            CallSources::dispatch($sources);
-            $this->info('Job dispatched successfully.');
-            Log::info('CallSources job dispatched successfully.');
-            return 0;
-        } catch (Exception $e) {
-            $this->error('Failed to dispatch job.');
-            Log::error('Failed to dispatch CallSources job: ' . $e->getMessage());
-            return 1;
-        }
+        $sourceKeeper = new $sourceKeeperClass();
+        $sources = $sourceKeeper->getSources();
+        CallSources::dispatch($sources);
+        $this->info('Job dispatched successfully.');
+        Log::info('CallSources job dispatched successfully.');
+        return 0;
     }
 }

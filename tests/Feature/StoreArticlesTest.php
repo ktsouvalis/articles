@@ -24,7 +24,7 @@ class StoreArticlesTest extends TestCase
         ];
 
         $storeArticles = new StoreArticles();
-        $storeArticles->handle($mappedData, 'NYTimes');
+        $storeArticles->handle('NYTimes',$mappedData);
 
         $this->assertDatabaseHas('articles', ['doc_id' => '1']);
     }
