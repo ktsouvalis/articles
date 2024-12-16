@@ -19,12 +19,7 @@ class Mapper
         foreach ($data as $page) {
             $nestedData = $page;
             foreach ($this->articles_key as $key) {
-                if (isset($nestedData[$key])) {
-                    $nestedData = $nestedData[$key];
-                } else {
-                    Log::error("Key '$key' not found in page data");
-                    break 2; // Break both loops
-                }
+                $nestedData = $nestedData[$key];
             }
             foreach ($nestedData as $article) {
                 $mappedArticle = [];

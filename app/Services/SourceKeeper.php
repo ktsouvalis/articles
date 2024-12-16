@@ -19,8 +19,8 @@ class SourceKeeper {
                 'url' => env('NYTIMES_API_URL'),
                 'params' => ['api-key' => env('NYTIMES_API_KEY'),'begin_date' => $this->lastCallService->getLastCall('NYTimes'), 'end_date' => Carbon::now()->toDateString()],
                 'start_page' => 0,
-                'total_key' => 'response.meta.hits',
-                'articles_key' => 'response.docs',
+                'total_key' => 'response.meta.hit',
+                'articles_key' => 'response.doc',
                 'page_size' => 10,
                 'fields' => [
                     'doc_id' => '_id',

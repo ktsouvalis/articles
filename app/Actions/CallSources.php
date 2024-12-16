@@ -18,15 +18,18 @@ class CallSources
     {
         $keeper = new SourceKeeper();
         $sources = $keeper->getSources();
-
+        if(empty($sources)){
+            Log::info('No sources found');
+            return;
+        }
         foreach ($sources as $source) {
-            $flattened_data = $this->fetchAndMapData($source);
-            if (empty($flattened_data)) {
+            $flattenedData = $this->fetchAndMapData($source);
+            if (empty($flattenedData)) {
                 Log::info('No new articles found in ' . $source['fields']['source']);
                 continue;
             }
             
-            StoreArticles::dispatch($flattened_data);
+            StoreArticles::dispatch($flattenedData);
         }
     }
 
@@ -41,8 +44,11 @@ class CallSources
     private function fetchAndMapData($source){
         $fetcher = new NewsFetcher($source);
         $data = $fetcher->getData();
+        if (empty($data)) {
+            return [];
+        }
         $mapper = new Mapper($source);
-        $mapped_data[] = $mapper->mapData($data);
-        return array_merge(...$mapped_data);
+        $mappedData[] = $mapper->mapData($data);
+        return array_merge(...$mappedData);
     }
 }
