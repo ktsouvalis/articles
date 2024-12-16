@@ -16,11 +16,12 @@ class SourceKeeper {
     private function setSources() {
         $this->sources = [
             [
+                'name' => 'NYTimes',
                 'url' => env('NYTIMES_API_URL'),
                 'params' => ['api-key' => env('NYTIMES_API_KEY'),'begin_date' => $this->lastCallService->getLastCall('NYTimes'), 'end_date' => Carbon::now()->toDateString()],
                 'start_page' => 0,
-                'total_key' => 'response.meta.hit',
-                'articles_key' => 'response.doc',
+                'total_key' => 'response.meta.hits',
+                'articles_key' => 'response.docs',
                 'page_size' => 10,
                 'fields' => [
                     'doc_id' => '_id',
@@ -30,10 +31,10 @@ class SourceKeeper {
                     'title' => 'headline.main',
                     'url' => 'web_url',
                     'summary' => 'abstract',
-                    'source' => 'NYTimes'
                 ]
             ],
             [
+                'name' => 'Guardian',
                 'url' => env('GUARDIAN_API_URL'),
                 'params' => ['api-key' => env('GUARDIAN_API_KEY'),'from-date' => $this->lastCallService->getLastCall('Guardian'), 'to-date' => Carbon::now()->toDateString()],
                 'start_page' => 1,
@@ -48,10 +49,10 @@ class SourceKeeper {
                     'title' => 'webTitle',
                     'url' => 'webUrl',
                     'summary' => 'webTitle',
-                    'source' => 'Guardian'
                 ]
             ],
             [
+                'name' => 'NewsAPI',
                 'url' => env('NEWSAPI_API_URL'),
                 'params' => ['apiKey' => env('NEWSAPI_API_KEY'),'from' => $this->lastCallService->getLastCall('NewsAPI'), 'to' => Carbon::now()->toDateString(), 'q' => 'BBC'],
                 'start_page' => 1,
@@ -66,11 +67,11 @@ class SourceKeeper {
                     'title' => 'title',
                     'url' => 'url',
                     'summary' => 'description',
-                    'source' => 'NewsAPI'
                 ]
             ],
             // Add more sources here
             // [
+            //     'name' => 'your_source_api_chosen_name',
             //     'url' => env('your_source_api_url'),
             //     'params' => ['apiKey' => env('your_source_api_key'),'from' => $this->lastCallService->getLastCall('your_source_api_chosen_name'), 'to' => Carbon::now()->toDateString()],
             //     'start_page' => your_source_api_start_page, //some sources start from page 0, others from page 1
@@ -85,7 +86,6 @@ class SourceKeeper {
             //         'title' => 'your_source_api_response_article_title_key',
             //         'url' => 'your_source_api_response_article_url_key',
             //         'summary' => 'your_source_api_response_article_description_key',
-            //         'source' => 'your_source_api_chosen_name'
             //     ]
             // ],
         ];

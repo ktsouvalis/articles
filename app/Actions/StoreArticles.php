@@ -14,13 +14,13 @@ class StoreArticles
 {
     use AsAction;
 
-    public function handle(array $mappedData) {
+    public function handle(string $name, array $mappedData) {
         $old_count = Article::count();
         $articles = [];
         foreach ($mappedData as $data) {
             $articles[] = [
                 'doc_id' => $data['doc_id'],
-                'source' => $data['source'],
+                'source' => strtolower($name),
                 'published_at' => Carbon::parse($data['published_at']),
                 'author' => $data['author'] ?? null,
                 'category' => $data['category'],
@@ -41,7 +41,7 @@ class StoreArticles
         Log::info('STORER: ' . (Article::count() - $old_count) . ' articles stored successfully from ' . $articles[0]['source']);
     }
 
-    public function asJob(array $mappedData) { 
-        return $this->handle($mappedData);
+    public function asJob(string $name, array $mappedData) { 
+        return $this->handle($name, $mappedData);
     }
 }

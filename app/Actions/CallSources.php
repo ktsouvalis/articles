@@ -25,11 +25,11 @@ class CallSources
         foreach ($sources as $source) {
             $flattenedData = $this->fetchAndMapData($source);
             if (empty($flattenedData)) {
-                Log::info('No new articles found in ' . $source['fields']['source']);
+                Log::info('No new articles found in ' . $source['name']);
                 continue;
             }
             
-            StoreArticles::dispatch($flattenedData);
+            StoreArticles::dispatch($source['name'], $flattenedData);
         }
     }
 
