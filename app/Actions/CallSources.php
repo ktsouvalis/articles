@@ -4,9 +4,7 @@ namespace App\Actions;
 
 use Carbon\Carbon;
 use App\Services\Mapper;
-use App\Services\NewsFetcher;
-use App\Services\SourceKeeper;
-use Illuminate\Support\Facades\DB;
+use App\Services\Fetcher;
 use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -14,10 +12,8 @@ class CallSources
 {
     use AsAction;
 
-    public function handle()
+    public function handle($sources)
     {
-        $keeper = new SourceKeeper();
-        $sources = $keeper->getSources();
         if(empty($sources)){
             Log::info('No sources found');
             return;
@@ -36,13 +32,13 @@ class CallSources
     /**
      * @codeCoverageIgnore
      */
-    public function asJob()
+    public function asJob($sources)
     {
-        return $this->handle();
+        return $this->handle($sources);
     }
 
     private function fetchAndMapData($source){
-        $fetcher = new NewsFetcher($source);
+        $fetcher = new Fetcher($source);
         $data = $fetcher->getData();
         if (empty($data)) {
             return [];

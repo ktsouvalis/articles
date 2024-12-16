@@ -5,7 +5,7 @@ namespace App\Actions;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Article;
-use App\Services\LastCallService;
+use App\Services\LastCall;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -36,7 +36,7 @@ class StoreArticles
             exit;
         }
 
-        $lastCallService = new LastCallService();
+        $lastCallService = new LastCall();
         $lastCallService->updateLastCall($articles[0]['source']);
         Log::info('STORER: ' . (Article::count() - $old_count) . ' articles stored successfully from ' . $articles[0]['source']);
     }

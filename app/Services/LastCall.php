@@ -5,7 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class LastCallService
+class LastCall
 {
     public function getLastCall($sourceName){
         $lastCall = DB::table('last_news')->where('name', $sourceName)->value('last_call');

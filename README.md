@@ -69,7 +69,7 @@ php artisan queue:work
 ### Terminal 3: Run the Custom Command
 
 ```sh
-php artisan app:call-sources
+php artisan app:call-sources <keeperClassName>
 ```
 
 ### OR: Run the scheduler and wait until 6am or 6pm
@@ -80,9 +80,15 @@ php artisan schedule:work
 
 ## Extending the Application
 
-### Pick an API source of your preference, and add a New Source in `app/Services/SourceKeeper.php`:
-    - Locate the `SourceKeeper` class in your project.
-    - Use the `setSources` method to add a new record to the sources array for your chosen API source. This will typically involve specifying the source name and any necessary configuration details. You have to study your choice's API Documentation
+### Pick an API source of your preference, and add a New Source in `app/Services/Keepers/Keeper.php`:
+    - Locate the `Keeper` class in your project.
+    - Add a new record to the sources array for your chosen API source. This will typically involve specifying the source name and any necessary configuration details. You have to study your choice's API Documentation
+
+### OR Create a new keeper class (if the first one becomes extremely large or if you need a different scheduling): 
+    - Create a new keeper class inside `app/Services/Keepers/`
+    - The new class must implement SourceKeeper Interface
+    - Check the `app/Services/Keepers/Keeper.php` as an example
+    
 
 ## License
 

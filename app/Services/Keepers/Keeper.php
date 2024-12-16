@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Keepers;
 
 use Carbon\Carbon;
+use App\Interfaces\SourceKeeper;
+use App\Services\LastCall;
 
-class SourceKeeper {
+class Keeper implements SourceKeeper{
     private $sources = [];
     private $lastCallService;
 
     public function __construct() {
-        $this->lastCallService = new LastCallService();
-        $this->setSources();
-    }
-
-    private function setSources() {
+        $this->lastCallService = new LastCall();
         $this->sources = [
             [
                 'name' => 'NYTimes',

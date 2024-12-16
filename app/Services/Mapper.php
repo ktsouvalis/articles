@@ -21,7 +21,7 @@ class Mapper
         foreach ($data as $page) {
             $nestedData = $page;
             foreach ($this->articles_key as $key) {
-                //the check if $key exists is in NewsFetcher.php to save the api calls if it does not exist
+                //the check if $key exists is in Fetcher.php to save the api calls if it does not exist
                 $nestedData = $nestedData[$key];
             }
             foreach ($nestedData as $article) {
