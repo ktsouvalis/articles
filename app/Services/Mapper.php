@@ -23,7 +23,7 @@ class Mapper
                     $nestedData = $nestedData[$key];
                 } else {
                     Log::error("Key '$key' not found in page data");
-                    continue 2; // Skip to the next page
+                    break 2; // Break both loops
                 }
             }
             foreach ($nestedData as $article) {

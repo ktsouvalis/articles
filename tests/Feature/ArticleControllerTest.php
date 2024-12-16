@@ -48,4 +48,56 @@ class ArticleControllerTest extends TestCase
         $response = $this->get('/api/articles');
         $response->assertStatus(404);
     }
+
+    public function test_get_articles_by_published_at_range()
+    {
+        Article::factory()->create(['author' => 'John Doe', 'category' => 'Tech', 'published_at' => '2024-12-08']);
+        Article::factory()->create(['author' => 'Jane Smith', 'category' => 'Health', 'published_at' => '2024-12-09']);
+        Article::factory()->create(['author' => 'Alice Johnson', 'category' => 'Tech', 'published_at' => '2024-12-10']);
+
+        $response = $this->get('/api/articles?published_at_start=2024-12-08&published_at_end=2024-12-09');
+        $response->assertStatus(200)->assertJsonCount(2, 'data');
+    }
+
+    public function test_get_articles_by_single_published_at_start()
+    {
+        Article::factory()->create(['author' => 'John Doe', 'category' => 'Tech', 'published_at' => '2024-12-08']);
+        Article::factory()->create(['author' => 'Jane Smith', 'category' => 'Health', 'published_at' => '2024-12-09']);
+        Article::factory()->create(['author' => 'Alice Johnson', 'category' => 'Tech', 'published_at' => '2024-12-10']);
+
+        $response = $this->get('/api/articles?published_at_start=2024-12-09');
+        $response->assertStatus(200)->assertJsonCount(1, 'data');
+    }
+
+    public function test_get_articles_by_single_published_at_end()
+    {
+        Article::factory()->create(['author' => 'John Doe', 'category' => 'Tech', 'published_at' => '2024-12-08']);
+        Article::factory()->create(['author' => 'Jane Smith', 'category' => 'Health', 'published_at' => '2024-12-09']);
+        Article::factory()->create(['author' => 'Alice Johnson', 'category' => 'Tech', 'published_at' => '2024-12-10']);
+
+        $response = $this->get('/api/articles?published_at_end=2024-12-09');
+        $response->assertStatus(200)->assertJsonCount(1, 'data');
+    }
+
+    public function test_get_articles_by_source()
+    {
+        Article::factory()->create(['author' => 'John Doe', 'category' => 'Tech', 'published_at' => '2024-12-08', 'source' => 'TechCrunch']);
+        Article::factory()->create(['author' => 'Jane Smith', 'category' => 'Health', 'published_at' => '2024-12-09', 'source' => 'HealthLine']);
+
+        $response = $this->get('/api/articles?source=TechCrunch');
+        $response->assertStatus(200)->assertJsonCount(1, 'data');
+    }
+
+    public function test_get_articles_with_pagination()
+    {
+        Article::factory()->count(30)->create(['author' => 'John Doe', 'category' => 'Tech', 'published_at' => '2024-12-08']);
+
+        $response = $this->get('/api/articles?page_size=10');
+        $response->assertStatus(200)->assertJson([
+            'total' => 30,
+            'per_page' => 10,
+            'current_page' => 1,
+            'last_page' => 3,
+        ]);
+    }
 }
