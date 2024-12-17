@@ -11,8 +11,8 @@ Schedule::call(function(){
     CallSources::dispatch($sources);
 })->twiceDaily(6, 18);
 
-// Schedule::call(function(){
-//     $keeper = new ExampleKeeper();
-//     $sources = $keeper->getSources();
-//     CallSources::dispatch($sources);
-// })->twiceDaily(7, 19);
+Schedule::call(function(){
+    $keeper = New Keeper2();
+    $sources = $keeper->getSources();
+    CallSources::dispatch($sources);
+})->hourly();
