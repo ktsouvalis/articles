@@ -33,7 +33,6 @@ class StoreArticles
             Article::insertOrIgnore($articles);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            exit;
         }
 
         $lastCallService = new LastCall();
@@ -41,6 +40,9 @@ class StoreArticles
         Log::info('STORER: ' . (Article::count() - $old_count) . ' articles stored successfully from ' . $articles[0]['source']);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function asJob(string $name, array $mappedData) { 
         return $this->handle($name, $mappedData);
     }

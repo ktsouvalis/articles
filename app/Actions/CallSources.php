@@ -24,7 +24,27 @@ class CallSources
                 Log::info('No new articles found in ' . $source['name']);
                 continue;
             }
-            
+            // $flattendedData are like this:
+            // $data = [
+            //     [
+            //         "doc_id" => "",
+            //         "published_at" => "",
+            //         "category" => ",
+            //         "author" => "",
+            //         "title" => "",
+            //         "url" => "",
+            //         "summary" => ""
+            //     ],
+            //     [
+            //         "doc_id" => "",
+            //         "published_at" => "",
+            //         "category" => "",
+            //         "author" => "",
+            //         "title" => "",
+            //         "url" => "",
+            //         "summary" => ""
+            //     ]
+            // ];
             StoreArticles::dispatch($source['name'], $flattenedData);
         }
     }

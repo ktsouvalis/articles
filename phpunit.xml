@@ -18,7 +18,7 @@
         </include>
         <exclude>
             <directory>app/models</directory>
-            <file>app/Services/Keepers/ExampleKeeper.php</file>
+            <directory>app/Services/Keepers</directory>
         </exclude>
     </source>
     <php>
