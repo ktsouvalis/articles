@@ -28,6 +28,7 @@ class Keeper2 implements SourceKeeper{
                 'name' => 'Currents',
                 'url' => env('CURRENTS_API_URL'),
                 'params' => ['apiKey'=>env('CURRENTS_API_KEY')],
+                'headers'=>null,
                 'start_page' => 1,
                 'total_key' => null,
                 'articles_key' => 'news',
@@ -47,6 +48,7 @@ class Keeper2 implements SourceKeeper{
             //     'name' => 'your_source_api_chosen_name',
             //     'url' => env('your_source_api_url'),
             //     'params' => ['apiKey' => env('your_source_api_key'),'from' => $this->lastCallService->getLastCall('your_source_api_chosen_name'), 'to' => Carbon::now()->toDateString()],
+            //     'headers'=>['Authorization' => 'Bearer '.env(your_source_api_key)], //if needed inside the headers
             //     'start_page' => your_source_api_start_page, //some sources start from page 0, others from page 1
             //     'total_key' => 'your_source_api_response_total_results_key',
             //     'articles_key' => 'your_source_api_response_articles_key',

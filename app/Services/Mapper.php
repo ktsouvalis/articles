@@ -19,30 +19,41 @@ class Mapper
     public function mapData($data) {
         $articles = [];
         foreach ($data as $page) {
-            $nestedData = $page;
-            foreach ($this->articles_key as $key) {
-                //the check if $key exists is in Fetcher.php to save the api calls if it does not exist
-                $nestedData = $nestedData[$key];
-            }
+            $nestedData = $this->getNestedData($page);
             foreach ($nestedData as $article) {
-                $mappedArticle = [];
-                foreach ($this->fields as $key => $field) {
-                    if($field == null){
-                        $mappedArticle[$key] = 'unknown';
-                        continue;
-                    }
-                    $fieldValue = $this->getFieldValue($article, $field);
-                    if (is_null($fieldValue)) {
-                        Log::error("MAPPER: $this->name Field $field not found in article");
-                        break 3;
-                    }
-                    $mappedArticle[$key] = $fieldValue;
+                $mappedArticle = $this->mapArticle($article);
+                if ($mappedArticle !== null) {
+                    $articles[] = $mappedArticle;
                 }
-                $articles[] = $mappedArticle;
             }
         }
         Log::info("MAPPER: Mapped " . count($articles) . " articles");
         return $articles;
+    }
+
+    private function getNestedData($page) {
+        $nestedData = $page;
+        foreach ($this->articles_key as $key) {
+            $nestedData = $nestedData[$key];
+        }
+        return $nestedData;
+    }
+
+    private function mapArticle($article) {
+        $mappedArticle = [];
+        foreach ($this->fields as $key => $field) {
+            if ($field == null) {
+                $mappedArticle[$key] = 'unknown';
+                continue;
+            }
+            $fieldValue = $this->getFieldValue($article, $field);
+            if (is_null($fieldValue)) {
+                Log::error("MAPPER: $this->name Field $field not found in article");
+                return null;
+            }
+            $mappedArticle[$key] = $fieldValue;
+        }
+        return $mappedArticle;
     }
 
     private function getFieldValue($article, $field) {

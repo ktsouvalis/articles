@@ -11,12 +11,14 @@ class Fetcher
     protected $total_key;
     protected $page_size;
     protected $params;
+    protected $headers;
     protected $data;
     protected $total_pages;
 
     public function __construct($source){
         $this->baseUrl = $source['url'];
         $this->params = $source['params'];
+        $this->headers = $source['headers'] ?? [];
         $this->start_page = $source['start_page'] ?? 1;
         $this->total_key = $source['total_key']; 
         $this->page_size = $source['page_size'] ?? 10;
@@ -29,9 +31,8 @@ class Fetcher
         $allData = [];
 
         while ($page <= $this->total_pages) {
-            $query = array_merge($this->params, ['page' => $page]);
-            $url = $this->baseUrl . '?' . http_build_query($query);
-            $response = Http::get($url);
+            $url = $this->makeUrl($this->baseUrl, $this->params, $page);
+            $response = Http::withHeaders($this->headers)->get($url);
             Log::info("Try to fetch from $url");
             
             if ($response->status() != 200) {
@@ -55,6 +56,15 @@ class Fetcher
         }
 
         $this->data = $allData;
+    }
+
+    private function makeUrl($url, $params, $page){
+        $url .= '?';
+        $params['page'] = $page;
+        foreach ($params as $key => $value) {
+            $url .= $key.'='.$value.'&';
+        }
+        return rtrim($url, '&');
     }
 
     private function retreiveResultsNumberFromResponse($data){

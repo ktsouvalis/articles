@@ -17,6 +17,7 @@ class Keeper implements SourceKeeper{
                 'name' => 'NYTimes',
                 'url' => env('NYTIMES_API_URL'),
                 'params' => ['api-key' => env('NYTIMES_API_KEY'),'begin_date' => $this->lastCallService->getLastCall('NYTimes'), 'end_date' => Carbon::now()->toDateString()],
+                'headers' => null,
                 'start_page' => 0,
                 'total_key' => 'response.meta.hits',
                 'articles_key' => 'response.docs',
@@ -35,6 +36,7 @@ class Keeper implements SourceKeeper{
                 'name' => 'Guardian',
                 'url' => env('GUARDIAN_API_URL'),
                 'params' => ['api-key' => env('GUARDIAN_API_KEY'),'from-date' => $this->lastCallService->getLastCall('Guardian'), 'to-date' => Carbon::now()->toDateString()],
+                'headers' => null,
                 'start_page' => 1,
                 'total_key' => 'response.total',
                 'articles_key' => 'response.results',
@@ -53,6 +55,7 @@ class Keeper implements SourceKeeper{
                 'name' => 'NewsAPI',
                 'url' => env('NEWSAPI_API_URL'),
                 'params' => ['apiKey' => env('NEWSAPI_API_KEY'),'from' => $this->lastCallService->getLastCall('NewsAPI'), 'to' => Carbon::now()->toDateString(), 'q' => 'BBC'],
+                'headers'=>null,
                 'start_page' => 1,
                 'total_key' => 'totalResults',
                 'articles_key' => 'articles',
@@ -72,6 +75,7 @@ class Keeper implements SourceKeeper{
             //     'name' => 'your_source_api_chosen_name',
             //     'url' => env('your_source_api_url'),
             //     'params' => ['apiKey' => env('your_source_api_key'),'from' => $this->lastCallService->getLastCall('your_source_api_chosen_name'), 'to' => Carbon::now()->toDateString()],
+            //     'headers' => ['Authorization' => 'Bearer ' . env('your_source_api_key')], //if needed inside the headers
             //     'start_page' => your_source_api_start_page, //some sources start from page 0, others from page 1
             //     'total_key' => 'your_source_api_response_total_results_key',
             //     'articles_key' => 'your_source_api_response_articles_key',
