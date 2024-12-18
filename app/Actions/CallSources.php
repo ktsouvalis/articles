@@ -64,7 +64,7 @@ class CallSources
             return [];
         }
         $mapper = new Mapper($source);
-        $mappedData[] = $mapper->mapData($data);
-        return array_merge(...$mappedData);
+        $mappedData = $mapper->mapData($data);
+        return $mappedData;
     }
 }
