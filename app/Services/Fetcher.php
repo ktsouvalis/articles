@@ -46,9 +46,7 @@ class Fetcher
             $allData[] = $data;
 
             if ($page == $this->start_page) {
-                $resultsNumber = $this->retreiveResultsNumberFromResponse($data);
-                Log::info("Total results: $resultsNumber");
-                $this->total_pages = $this->calculatePages($resultsNumber);
+                $this->total_pages = $this->initializePagination($data);
                 Log::info("Total pages: $this->total_pages");
             }
 
@@ -56,6 +54,12 @@ class Fetcher
         }
 
         $this->data = $allData;
+    }
+
+    private function initializePagination($data){
+        $resultsNumber = $this->retreiveResultsNumberFromResponse($data);
+        Log::info("Total results: $resultsNumber");
+        return $this->calculatePages($resultsNumber);
     }
 
     private function makeUrl($url, $params, $page){

@@ -74,6 +74,31 @@ class FetcherTest extends TestCase
         $this->assertEmpty($fetcher->getData());
     }
 
+    public function test_initialize_pagination()
+    {
+        $fetcher = new Fetcher([
+            'url' => 'api.nytimes.com/svc/search/v2/articlesearch.json',
+            'params' => [],
+            'total_key' => 'response.meta.hits',
+            'page_size' => 10
+        ]);
+
+        $data = [
+            'response' => [
+                'meta' => [
+                    'hits' => 140
+                ]
+            ]
+        ];
+
+        $reflection = new ReflectionClass($fetcher);
+        $method = $reflection->getMethod('initializePagination');
+        $method->setAccessible(true);
+        $totalPages = $method->invokeArgs($fetcher, [$data]);
+
+        $this->assertEquals(14, $totalPages);
+    }
+
     public function test_retrieve_results_number_from_response()
     {
         $fetcher = new Fetcher([

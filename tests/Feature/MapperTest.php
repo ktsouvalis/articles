@@ -199,4 +199,91 @@ class MapperTest extends TestCase
         $this->assertEquals('http://example.com', $mappedData[0]['url']);
         $this->assertEquals('This is a test article.', $mappedData[0]['summary']);
     }
+
+    public function test_map_data_with_nested_keys()
+    {
+        $source = [
+            'name' => 'TestSource',
+            'fields' => [
+                'doc_id' => 'id',
+                'published_at' => 'date',
+                'category' => 'category',
+                'author' => 'author.name',
+                'title' => 'title',
+                'url' => 'url',
+                'summary' => 'summary',
+            ],
+            'articles_key' => 'response.articles'
+        ];
+
+        $data = [
+            [
+                'response' => [
+                    'articles' => [
+                        [
+                            'id' => '1',
+                            'date' => '2023-01-01',
+                            'category' => 'News',
+                            'author' => ['name' => 'John Doe'],
+                            'title' => 'Test Article',
+                            'url' => 'http://example.com',
+                            'summary' => 'This is a test article.'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $mapper = new Mapper($source);
+        $mappedData = $mapper->mapData($data);
+
+        $this->assertCount(1, $mappedData);
+        $this->assertEquals('1', $mappedData[0]['doc_id']);
+        $this->assertEquals('2023-01-01', $mappedData[0]['published_at']);
+        $this->assertEquals('News', $mappedData[0]['category']);
+        $this->assertEquals('John Doe', $mappedData[0]['author']);
+        $this->assertEquals('Test Article', $mappedData[0]['title']);
+        $this->assertEquals('http://example.com', $mappedData[0]['url']);
+        $this->assertEquals('This is a test article.', $mappedData[0]['summary']);
+    }
+
+    public function test_map_data_with_missing_nested_key()
+    {
+        $source = [
+            'name' => 'TestSource',
+            'fields' => [
+                'doc_id' => 'id',
+                'published_at' => 'date',
+                'category' => 'category',
+                'author' => 'author.name',
+                'title' => 'title',
+                'url' => 'url',
+                'summary' => 'summary',
+            ],
+            'articles_key' => 'response.articles'
+        ];
+
+        $data = [
+            [
+                'response' => [
+                    'articles' => [
+                        [
+                            'id' => '1',
+                            'date' => '2023-01-01',
+                            'category' => 'News',
+                            'author' => [],
+                            'title' => 'Test Article',
+                            'url' => 'http://example.com',
+                            'summary' => 'This is a test article.'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $mapper = new Mapper($source);
+        $mappedData = $mapper->mapData($data);
+
+        $this->assertEmpty($mappedData);
+    }
 }

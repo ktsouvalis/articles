@@ -4,20 +4,20 @@ PHPUnit 11.5.0 by Sebastian Bergmann and contributors.
 Runtime:       PHP 8.3.10 with Xdebug 3.3.2
 Configuration: \phpunit.xml
 
-..............................                                    30 / 30 (100%)
+.................................                                 33 / 33 (100%)
 
-Time: 00:04.730, Memory: 50.00 MB
+Time: 00:05.026, Memory: 50.00 MB
 
-OK (30 tests, 68 assertions)
+OK (33 tests, 78 assertions)
 
 
 Code Coverage Report:      
-  2024-12-17 08:31:01      
+  2024-12-18 06:50:31      
                            
  Summary:                  
   Classes: 71.43% (5/7)    
-  Methods: 80.00% (12/15)  
-  Lines:   96.18% (151/157)
+  Methods: 84.21% (16/19)  
+  Lines:   96.43% (162/168)
 
 App\Actions\CallSources
   Methods:   0.00% ( 0/ 2)   Lines:  75.00% ( 12/ 16)
@@ -28,8 +28,8 @@ App\Console\Commands\CallSourcesCommand
 App\Http\Controllers\ArticleController
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 31/ 31)
 App\Services\Fetcher
-  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 39/ 39)
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 45/ 45)
 App\Services\LastCall
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  6/  6)
 App\Services\Mapper
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 31/ 31)
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 36/ 36)
