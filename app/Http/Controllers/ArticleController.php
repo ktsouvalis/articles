@@ -70,14 +70,12 @@ class ArticleController extends Controller
         $articles->appends($request->except('page'));
 
         return response()->json([
-            'meta' => [
-                'total' => $articles->total(),
-                'current_page' => $articles->currentPage(),
-                'last_page' => $articles->lastPage(),
-                'per_page' => $articles->perPage(),
-                'next_page_url' => $articles->nextPageUrl(),
-                'prev_page_url' => $articles->previousPageUrl(),
-            ],
+            'total' => $articles->total(),
+            'current_page' => $articles->currentPage(),
+            'last_page' => $articles->lastPage(),
+            'per_page' => $articles->perPage(),
+            'next_page_url' => $articles->nextPageUrl(),
+            'prev_page_url' => $articles->previousPageUrl(),
             'data' => ArticleResource::collection($articles),
         ], 200);
     }
