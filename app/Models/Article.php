@@ -18,4 +18,8 @@ class Article extends Model
         'content',
         'created_at',
     ];
+
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
 }
