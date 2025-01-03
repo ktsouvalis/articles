@@ -100,4 +100,52 @@ class ArticleControllerTest extends TestCase
             'last_page' => 3,
         ]);
     }
+
+    public function test_validation_error_author()
+    {
+        $response = $this->get('/api/articles?author=' . str_repeat('a', 256));
+        $response->assertStatus(422)->assertJsonValidationErrors(['author']);
+    }
+
+    public function test_validation_error_category()
+    {
+        $response = $this->get('/api/articles?category=' . str_repeat('a', 256));
+        $response->assertStatus(422)->assertJsonValidationErrors(['category']);
+    }
+
+    public function test_validation_error_published_at_start()
+    {
+        $response = $this->get('/api/articles?published_at_start=invalid-date');
+        $response->assertStatus(422)->assertJsonValidationErrors(['published_at_start']);
+    }
+
+    public function test_validation_error_published_at_end()
+    {
+        $response = $this->get('/api/articles?published_at_end=invalid-date');
+        $response->assertStatus(422)->assertJsonValidationErrors(['published_at_end']);
+    }
+
+    public function test_validation_error_published_at()
+    {
+        $response = $this->get('/api/articles?published_at=invalid-date');
+        $response->assertStatus(422)->assertJsonValidationErrors(['published_at']);
+    }
+
+    public function test_validation_error_source()
+    {
+        $response = $this->get('/api/articles?source=' . str_repeat('a', 256));
+        $response->assertStatus(422)->assertJsonValidationErrors(['source']);
+    }
+
+    public function test_validation_error_page_size_min()
+    {
+        $response = $this->get('/api/articles?page_size=0');
+        $response->assertStatus(422)->assertJsonValidationErrors(['page_size']);
+    }
+
+    public function test_validation_error_page_size_max()
+    {
+        $response = $this->get('/api/articles?page_size=51');
+        $response->assertStatus(422)->assertJsonValidationErrors(['page_size']);
+    }
 }
