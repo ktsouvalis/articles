@@ -56,6 +56,7 @@ class ArticleControllerTest extends TestCase
         Article::factory()->create(['author' => 'Alice Johnson', 'category' => 'Tech', 'published_at' => '2024-12-10']);
 
         $response = $this->get('/api/articles?published_at_start=2024-12-08&published_at_end=2024-12-09');
+        $response->dump();
         $response->assertStatus(200)->assertJsonCount(2, 'data');
     }
 
