@@ -17,22 +17,22 @@ class ArticleController extends Controller
      */
     public function getArticlesByCriteria(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'author' => 'nullable|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'published_at_start' => 'nullable|date',
-            'published_at_end' => 'nullable|date|after_or_equal:published_at_start',
-            'published_at' => 'nullable|date',
-            'source' => 'nullable|string|max:255',
-            'page_size' => 'nullable|integer|min:1|max:50',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'author' => 'nullable|string|max:255',
+        //     'category' => 'nullable|string|max:255',
+        //     'published_at_start' => 'nullable|date',
+        //     'published_at_end' => 'nullable|date|after_or_equal:published_at_start',
+        //     'published_at' => 'nullable|date',
+        //     'source' => 'nullable|string|max:255',
+        //     'page_size' => 'nullable|integer|min:1|max:50',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation error',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'message' => 'Validation error',
+        //         'errors' => $validator->errors(),
+        //     ], 422);
+        // }
 
         $query = Article::query();
 
