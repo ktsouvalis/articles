@@ -30,41 +30,41 @@ Route::get('/articles', [ArticleController::class, 'getArticlesByCriteria'])->mi
 // Status: 200 OK
 // Body: JSON array of articles, each containing the content field.
 
-	
-// total	325
-// current_page	1
-// last_page	17
-// per_page	20
-// next_page_url	"http://localhost:8000/api/articles?page=2"
-// prev_page_url	null
-// data	
-//  0	
-//      content	
-//          url	"https://www.theguardian.…is-deep-in-trump-country"
-//          title	"From brutalist school to…s deep in Trump country"
-//          author	null
-//          summary	"From brutalist school to…s deep in Trump country"
-//          category	"Art and design"
-//          published_at	"2024-12-09T05:00:13.000000Z"
-//  1	{…}
-//  2	{…}
-//  3	{…}
-//  4	{…}
-//  5	{…}
-//  6	{…}
-//  7	{…}
-//  8	{…}
-//  9	{…}
-//  10	{…}
-//  11	{…}
-//  12	{…}
-//  13	{…}
-//  14	{…}
-//  15	{…}
-//  16	{…}
-//  17	{…}
-//  18	{…}
-//  19	{…}
+//meta: 
+    // total	325
+    // current_page	1
+    // last_page	17
+    // per_page	20
+    // next_page_url	"http://localhost:8000/api/articles?page=2"
+    // prev_page_url	null
+// data:	
+    //  0	
+    //      content	
+    //          url	"https://www.theguardian.…is-deep-in-trump-country"
+    //          title	"From brutalist school to…s deep in Trump country"
+    //          author	null
+    //          summary	"From brutalist school to…s deep in Trump country"
+    //          category	"Art and design"
+    //          published_at	"2024-12-09T05:00:13.000000Z"
+    //  1	{…}
+    //  2	{…}
+    //  3	{…}
+    //  4	{…}
+    //  5	{…}
+    //  6	{…}
+    //  7	{…}
+    //  8	{…}
+    //  9	{…}
+    //  10	{…}
+    //  11	{…}
+    //  12	{…}
+    //  13	{…}
+    //  14	{…}
+    //  15	{…}
+    //  16	{…}
+    //  17	{…}
+    //  18	{…}
+    //  19	{…}
 
 // Notes:
 // If no query parameters are provided, all articles will be returned.

@@ -44,9 +44,13 @@ class ArticleController extends Controller
             $query->where('category', 'like', '%' . $request->input('category') . '%');
         }
 
-        if ($request->filled('published_at_start') && $request->filled('published_at_end')) {
+        if ($request->filled('published_at_start') xor $request->filled('published_at_end')){
+            $query->whereDate('published_at', $request->input('published_at_start') ?? $request->input('published_at_end'));
+        } 
+        elseif ($request->filled('published_at_start') && $request->filled('published_at_end')){
             $query->whereBetween('published_at', [$request->input('published_at_start'), $request->input('published_at_end')]);
-        } elseif ($request->filled('published_at')) {
+        } 
+        elseif ($request->filled('published_at')){
             $query->whereDate('published_at', $request->input('published_at'));
         }
 

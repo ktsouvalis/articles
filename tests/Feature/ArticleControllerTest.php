@@ -93,11 +93,15 @@ class ArticleControllerTest extends TestCase
         Article::factory()->count(30)->create(['author' => 'John Doe', 'category' => 'Tech', 'published_at' => '2024-12-08']);
 
         $response = $this->get('/api/articles?page_size=10');
-        $response->assertStatus(200)->assertJson([
-            'total' => 30,
-            'per_page' => 10,
-            'current_page' => 1,
-            'last_page' => 3,
+        $response->assertStatus(200)->assertJson(["meta"=> 
+            [
+                "total"=> 30,
+                "current_page"=> 1,
+                "last_page"=> 3,
+                "per_page"=> 10,
+                "next_page_url"=> "http://localhost/api/articles?page_size=10&page=2",
+                "prev_page_url"=> null
+            ]
         ]);
     }
 }
